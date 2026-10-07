@@ -133,9 +133,9 @@ def count_repeats(xs, x):
     def lt(lo, hi):
         if lo >= hi:
             return lo
-        mid = (lo +hi) // 2
+        mid = (lo + hi) // 2
         if xs[mid] < x:
             return lt(lo, mid)
-        return lt(mid+1, hi)
+        return lt(mid + 1, hi)
 
     return lt(0, len(xs)) - le(0, len(xs))

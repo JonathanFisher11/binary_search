@@ -116,6 +116,7 @@ def bounded_argmin(f, lo, hi, epsilon=1e-3):
         return bounded_argmin(f, lo, m2, epsilon)
     return bounded_argmin(f, m1, hi, epsilon)
 
+
 def find_boundaries(f, lo=-1, hi=1):
     '''
     Returns a tuple (lo,hi).
@@ -133,8 +134,8 @@ def find_boundaries(f, lo=-1, hi=1):
         you're done; return lo,hi
     '''
     mid = (lo + hi) / 2
-    if f(lo) > f(mid):
+    if f(lo) < f(mid):
         return find_boundaries(f, lo * 2, hi)
-    if f(hi) > f(lo):
+    if f(hi) < f(mid):
         return find_boundaries(f, lo, hi * 2)
     return lo, hi

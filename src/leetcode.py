@@ -13,7 +13,7 @@ Pay very close attention to your list indexes and your < vs <= operators.
 '''
 
 
-def find_smallest_positive(xs):
+def find_smallest_positive(xs, lo=0, hi=None):
     '''
     Assume that xs is a list of numbers sorted from LOWEST to HIGHEST.
     Find the index of the smallest positive number.
@@ -30,6 +30,14 @@ def find_smallest_positive(xs):
     >>> find_smallest_positive([-3, -2, -1]) is None
     True
     '''
+    if hi is None:
+        hi = len(xs)
+    if lo >= hi:
+        return lo if lo < len(xs) else None
+    mid = (lo + hi) // 2
+    if xs[mid] > 0:
+        return find_smallest_positive(xs, lo, mid)
+    return find_smallest_positive(xs, mid + 1, hi)
 
 
 def find_largest_negative(xs, lo=0, hi=None):
@@ -50,6 +58,14 @@ def find_largest_negative(xs, lo=0, hi=None):
     >>> find_largest_negative([-3, -2, -1])
     2
     '''
+    if hi is None:
+        hi = len(xs)
+    if lo >= hi:
+        return lo - 1 if lo > 0 else None
+    mid = (lo + hi) // 2
+    if xs[mid] >= 0:
+        return find_largest_negative(xs, lo, mid)
+    return find_largest_negative(xs, mid + 1, hi)
 
 
 def find_smallest(xs, lo=0, hi=None):
@@ -73,6 +89,16 @@ def find_smallest(xs, lo=0, hi=None):
     >>> find_smallest([]) is None
     True
     '''
+    if hi is None:
+        if not xs:
+            return None
+        hi = len(xs) - 1
+    if lo >= hi:
+        return lo
+    mid = (lo + hi) // 2
+    if xs[mid] > xs[mid + 1]:
+        return find_smallest(xs, mid + 1, hi)
+    return find_smallest(xs, lo, mid)
 
 
 def count_repeats(xs, x):
@@ -96,3 +122,20 @@ def count_repeats(xs, x):
     >>> count_repeats([3, 2, 1], 4)
     0
     '''
+    def le(lo, hi):
+        if lo >= hi:
+            return lo
+        mid = (lo + hi) // 2
+        if xs[mid] <= x:
+            return le(lo, mid)
+        return le(mid + 1, hi)
+
+    def lt(lo, hi):
+        if lo >= hi:
+            return lo
+        mid = (lo +hi) // 2
+        if xs[mid] < x:
+            return lt(lo, mid)
+        return lt(mid+1, hi)
+
+    return lt(0, len(xs)) - le(0, len(xs))
